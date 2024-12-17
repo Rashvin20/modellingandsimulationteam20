@@ -1,1 +1,2 @@
-# modellingandsimulationteam20
+# forestModel
+Forest growth modelling and simulation coursework
