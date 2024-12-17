@@ -6,26 +6,8 @@ from pygame_info import windows_width, windows_height, window, nutri_quare_size
 import more_function
 
 
-pygame.init() 
 timer = pygame.time.Clock()
-  
-# Define the background colour 
-# using RGB color coding. 
-background_colour = (234, 212, 202) 
-  
-# Define the dimensions of 
-# screen object(width,height) 
-# window = pygame.display.set_mode((windows_width, windows_height)) 
-  
-# Set the caption of the screen 
-pygame.display.set_caption('Modelling Project') 
-  
-# Fill the background colour to the screen 
-window.fill(background_colour) 
-  
-# Update the display using flip 
-pygame.display.flip() 
-  
+    
 # Variable to keep our game loop running 
 running = True
 
@@ -58,15 +40,6 @@ nutri_map = [[libs.Nutrient(init_nutri_amount=0.5,x_pos=i*nutri_quare_size, y_po
 
 more_function.Terminal_Show.print_nutri_map(nutri_map)
 
-def show_nutrients(nutri_map, window):
-    flag1 = True
-    for i in nutri_map:
-        for j in i:
-            if flag1:
-                pygame.draw.rect(window, (0,0,255*j.nutrient_amount),
-                                  pygame.Rect(j.x_pos,j.y_pos,nutri_quare_size,nutri_quare_size))
-            flag1 = not flag1
-
 
 # game loop 
 while running: 
@@ -75,13 +48,19 @@ while running:
     for event in pygame.event.get(): 
 
         if event.type == timestep: 
-            show_nutrients(nutri_map, window)
+            #make nutrients grow
+            more_function.Simulation.nutriments_growth(nutri_map)
+            more_function.Pygame_Display.show_nutrients(nutri_map)
 
+            #make trees eat nutrients
+            
+
+            #tree reproduction
+            more_function.Simulation.tree_reproduction(trees)
+            more_function.Pygame_Display.show_trees(trees)
             print("tree population:",len(trees))
-            # trees += [libs.Tree()]
-            trees_t = trees.copy() #trees at this moment in time
-            for tree in trees_t:
-                tree.reproduce(trees)
+            
+            #update window
             pygame.display.update()
       
         # Check for QUIT event       

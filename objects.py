@@ -1,10 +1,7 @@
 import random
 import math as m
 import pygame
-# from pygame_main import window #pygame window
-# from pygame_main import width, height 
-
-from pygame_info import windows_width, windows_height, window
+from pygame_info import windows_width, windows_height, window, nutri_quare_size
 
 
 
@@ -27,11 +24,13 @@ class Tree:
         self.alive = True
 
         #print("xpos = ", x_pos, "y_pos", y_pos)
-        #draw tree in window
-        pygame.draw.circle(window, (0, 125, 0), [self.x_pos, self.y_pos], 5, 0)
         
         #coeficients for equations
         self.fully_grown_age = 40 # 40 years to reach max height
+
+    def draw_self(self):
+        #draw tree in window
+        pygame.draw.circle(window, (0, 125, 0), [self.x_pos, self.y_pos], 5, 0)
 
     def reproduce(self, tree_list):
         # change this to exp rand num depending on size and whatnot
@@ -90,6 +89,12 @@ class Tree:
 
         pass
 
+    def max_food_abs(self):
+        """
+        Maximum amount of food that tree can absorb at once
+        """
+        pass
+
 
 
 
@@ -101,6 +106,14 @@ class Nutrient:
         self.x_pos = x_pos
         self.y_pos = y_pos
 
+    def draw_self(self):
+        #draw nutri square in window
+        red = int(170 * (1 - self.nutrient_amount) + 58)
+        green = int(174* (1 - self.nutrient_amount) + 38)
+        blue = int(126 * (1 - self.nutrient_amount))
+        rect = pygame.Rect(self.x_pos,self.y_pos,nutri_quare_size,nutri_quare_size)
+        pygame.draw.rect(window, (red,green,blue), rect)
+
     def replenish(self):
         """
         simulate soil growing back its nutrients, 
@@ -110,6 +123,8 @@ class Nutrient:
         coef1 = 1.3
         coef2 = 0.3
     
-        self.nutrient_amount = self.nutrient_amount * coef1 - self.nutrient_amount^2 * coef2
+        self.nutrient_amount = self.nutrient_amount * coef1 - self.nutrient_amount**2 * coef2
+
+    
 
     
