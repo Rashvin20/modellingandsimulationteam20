@@ -53,7 +53,9 @@ while running:
             more_function.Pygame_Display.show_nutrients(nutri_map)
 
             #make trees eat nutrients
-            
+            for tree in trees: #temporary
+                nutri_map[int(tree.y_pos//nutri_quare_size)][int(tree.x_pos//nutri_quare_size)].nutrient_amount *= 0.9
+
 
             #tree reproduction
             more_function.Simulation.tree_reproduction(trees)
