@@ -27,9 +27,6 @@ square_forest(windows_width, windows_height, trees)
 pygame.display.update()
 
 
-# trees +=[libs.Tree()]
-# pygame.display.update()
-
 timestep = pygame.USEREVENT + 1
 pygame.time.set_timer(timestep, 1000)
 
@@ -53,8 +50,8 @@ while running:
             more_function.Pygame_Display.show_nutrients(nutri_map)
 
             #make trees eat nutrients
-            for tree in trees: #temporary
-                nutri_map[int(tree.y_pos//nutri_quare_size)][int(tree.x_pos//nutri_quare_size)].nutrient_amount *= 0.9
+            more_function.Simulation.tree_eat_nutrients(trees, nutri_map)
+            more_function.Pygame_Display.show_nutrients(nutri_map)
 
 
             #tree reproduction

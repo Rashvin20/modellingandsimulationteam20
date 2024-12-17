@@ -42,3 +42,8 @@ class Simulation:
         for nutri_row in nutri_map:
             for nutri in nutri_row:
                 nutri.replenish()
+
+    @classmethod
+    def tree_eat_nutrients(cls, tree_list, nutri_map):
+        for tree in tree_list:
+            tree.eat(nutri_map, tree_list)
