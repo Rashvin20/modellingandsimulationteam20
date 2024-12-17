@@ -28,7 +28,7 @@ pygame.display.update()
 
 
 timestep = pygame.USEREVENT + 1
-pygame.time.set_timer(timestep, 1000)
+pygame.time.set_timer(timestep, 1000) 
 
 nutri_map = [[libs.Nutrient(init_nutri_amount=0.5,x_pos=i*nutri_quare_size, y_pos=j*nutri_quare_size)
                for i in range(windows_width//nutri_quare_size)] 
