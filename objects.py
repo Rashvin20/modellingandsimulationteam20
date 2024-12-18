@@ -30,10 +30,7 @@ class Tree:
         pygame.draw.circle(window, (0, 125, 0), [self.x_pos, self.y_pos], m.ceil(8*self.growth), 0)
 
     def reproduce(self, tree_list):
-        coef = 0.8
-        # change this to exp rand num depending on size and whatnot
-        # if random.random() > 0.9:
-        #     self.add_new_tree(tree_list)
+        coef = 0.8 #bigger coef -> less children
         
         for child in range(m.floor(random.expovariate(1/self.growth * coef))):
             self.add_new_tree(tree_list)
@@ -52,8 +49,7 @@ class Tree:
         If the tree cannot eat enough to grow, its growth is stunted, and if 
         the tree cannot eat enough to survive, it dies. 
         """
-        self.age += 1 #get older by one year
-
+        
         coef_ntt = 1/750 #nutrient to tree coefficient (1 nutri square can feed 750pt of hunger, when 1 adult tree eats 150pt) 
         coef_min_nutri = 0.001
         coef_eff_nutri = 0.4 # 0-1, at what nutrient concentration do trees start having trouble eating
@@ -85,6 +81,9 @@ class Tree:
         #check if tree dies of hunger
         if self.reserves < 0:
             self.kill(tree_list, list_lifespan_trees)
+
+        #if tree survives, it ages by 1 year
+        self.age += 1
 
 
     def survival_hunger(self):
