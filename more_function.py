@@ -1,5 +1,6 @@
 from pygame_info import windows_width, windows_height, window, nutri_quare_size
 import pygame 
+import math as m
 
 
 class Terminal_Show:
@@ -8,7 +9,7 @@ class Terminal_Show:
         for i in nutri_map:
             lister = []
             for j in i:
-                lister += [j.nutrient_amount] 
+                lister += [round(j.nutrient_amount,2)] 
             print(lister)
 
 class Pygame_Display:

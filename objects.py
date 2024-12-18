@@ -31,15 +31,13 @@ class Tree:
         pygame.draw.circle(window, (0, 125, 0), [self.x_pos, self.y_pos], m.ceil(8*self.growth), 0)
 
     def reproduce(self, tree_list):
-        coef = 1
+        coef = 0.8
         # change this to exp rand num depending on size and whatnot
         # if random.random() > 0.9:
         #     self.add_new_tree(tree_list)
         
         for child in range(m.floor(random.expovariate(1/self.growth * coef))):
             self.add_new_tree(tree_list)
-
-    
     
     def add_new_tree(self, trees_list):
         coef = 0.1
@@ -60,7 +58,7 @@ class Tree:
         coef_eff_nutri = 0.4 # 0-1, at what nutrient concentration do trees start having trouble eating
 
         #check available nutrients
-        available_nutrients = map[int(self.y_pos//nutri_quare_size)][int(self.x_pos//nutri_quare_size)].nutrient_amount #in %
+        available_nutrients = map[m.floor(self.y_pos//nutri_quare_size)][m.floor(self.x_pos//nutri_quare_size)].nutrient_amount #in %
             
         #reserve and survival hunger
         survival_hunger = self.survival_hunger() #food tree must eat to stay alive
@@ -70,16 +68,19 @@ class Tree:
         food_for_tree = nutrients_absorbed - survival_hunger #food for survival dissapears, rest is for tree reserves
         self.reserves += food_for_tree
         #remove nutrients from ground
-        map[int(self.y_pos//nutri_quare_size)][int(self.x_pos//nutri_quare_size)].nutrient_amount = \
+        map[m.floor(self.y_pos//nutri_quare_size)][m.floor(self.x_pos//nutri_quare_size)].nutrient_amount = \
             max([coef_min_nutri, available_nutrients - coef_ntt * nutrients_absorbed]) #never make it less than minimum amount
         
 
         #growth hunger
         if self.reserves > self.max_reserves() * 0.9: #if tree has filled 90% of its reserves
-            available_nutrients = map[int(self.y_pos//nutri_quare_size)][int(self.x_pos//nutri_quare_size)].nutrient_amount #update available nutrients
+            available_nutrients = map[m.floor(self.y_pos//nutri_quare_size)][m.floor(self.x_pos//nutri_quare_size)].nutrient_amount #update available nutrients
+            #print("available nutri:", available_nutrients)
             desired_growth = self.growth * 1.2 - self.growth**2 * 0.2 #takes about 40 years to reach full size
-            self.growth = desired_growth * min([1, available_nutrients/coef_eff_nutri]) #if less than 20% nutrients, tree has trouble absorbing nutrients
-            
+            desired_growth_increase = max([0, desired_growth - self.growth]) #never negative
+            #print("desired growth:",desired_growth)
+            self.growth += desired_growth_increase * min([1, available_nutrients/coef_eff_nutri]) #if less than 20% nutrients, tree has trouble absorbing nutrients
+
         #check if tree dies of hunger
         if self.reserves < 0:
             self.kill(tree_list)
@@ -105,7 +106,10 @@ class Tree:
         """
         kill the current tree
         """
-        tree_list.remove(self)
+        try:
+            tree_list.remove(self)
+        except ValueError:
+            print('kill_tree_error')
 
         del self
 

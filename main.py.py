@@ -58,13 +58,12 @@ while running:
             more_function.Simulation.tree_reproduction(trees)
             more_function.Pygame_Display.show_trees(trees)
             
-
             #kill trees with no sunlight
             more_function.Simulation.kill_trees_no_sun(trees)
             more_function.Pygame_Display.show_trees(trees)
 
             #terminal view
-            more_function.Terminal_Show.print_nutri_map(nutri_map)
+            #more_function.Terminal_Show.print_nutri_map(nutri_map)
             print("iteration:", iter)
             print("tree population:",len(trees))
             iter += 1
