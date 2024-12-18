@@ -37,6 +37,7 @@ nutri_map = [[libs.Nutrient(init_nutri_amount=0.5,x_pos=i*nutri_quare_size, y_po
 
 more_function.Terminal_Show.print_nutri_map(nutri_map)
 
+iter = 0
 
 # game loop 
 while running: 
@@ -53,11 +54,20 @@ while running:
             more_function.Simulation.tree_eat_nutrients(trees, nutri_map)
             more_function.Pygame_Display.show_nutrients(nutri_map)
 
-
             #tree reproduction
             more_function.Simulation.tree_reproduction(trees)
             more_function.Pygame_Display.show_trees(trees)
+            
+
+            #kill trees with no sunlight
+            more_function.Simulation.kill_trees_no_sun(trees)
+            more_function.Pygame_Display.show_trees(trees)
+
+            #terminal view
+            more_function.Terminal_Show.print_nutri_map(nutri_map)
+            print("iteration:", iter)
             print("tree population:",len(trees))
+            iter += 1
             
             #update window
             pygame.display.update()

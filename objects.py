@@ -93,19 +93,6 @@ class Tree:
 
         return m.exp(self.growth * coef)
 
-    
-    # def size(self):
-    #     """
-    #     How big the tree is, on a 0-1 scale, where 0 is smallest and 1 is biggest.
-    #     Size is used to calculate other properties of the tree.
-    #     """
-    #     #parameters
-    #     x_offset = 5
-    #     coef1 = self.fully_grown_age/10
-
-    #     #formula is modified sigmoid for a constrained growth
-    #     return 1/(1+m.exp(-self.age * coef1 + x_offset))   
-
     def max_reserves(self):
         """
         Maximum amount of reserves (food to eat when there is no food) a tree can have 
@@ -122,6 +109,19 @@ class Tree:
 
         del self
 
+    def die_if_under_canopy(self, tree_list):
+        """
+        if a small tree is under a big tree, we assume the big tree takes all 
+        the sunlight and kills the small tree 
+        """
+        coef_display_growth = 8
+        for tree in tree_list:
+            if tree == self: #skip this tree
+                continue
+            if tree.growth > self.growth: #bigger tree
+                dist = m.sqrt((tree.x_pos - self.x_pos)**2 + (tree.y_pos - self.y_pos)**2)
+                if dist < tree.growth * coef_display_growth + self.growth * coef_display_growth: #if touching (big tree removing sunlight)
+                    self.kill(tree_list) #kill small tree
 
 
 

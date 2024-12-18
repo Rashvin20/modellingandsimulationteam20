@@ -18,13 +18,6 @@ class Pygame_Display:
             for nutri in nutri_row:
                 nutri.draw_self()
 
-    # @classmethod
-    # def show_nutrients(cls, nutri_map, window):
-    #     for i in nutri_map:
-    #         for j in i:
-    #             pygame.draw.rect(window, (0,0,255*j.nutrient_amount),
-    #                             pygame.Rect(j.x_pos,j.y_pos,nutri_quare_size,nutri_quare_size))
-
     @classmethod
     def show_trees(cls, tree_list):
         for tree in tree_list:
@@ -47,3 +40,8 @@ class Simulation:
     def tree_eat_nutrients(cls, tree_list, nutri_map):
         for tree in tree_list:
             tree.eat(nutri_map, tree_list)
+        
+    @classmethod
+    def kill_trees_no_sun(cls, tree_list):
+        for tree in tree_list:
+            tree.die_if_under_canopy(tree_list)
