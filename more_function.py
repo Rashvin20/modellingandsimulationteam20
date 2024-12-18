@@ -38,11 +38,11 @@ class Simulation:
                 nutri.replenish()
 
     @classmethod
-    def tree_eat_nutrients(cls, tree_list, nutri_map):
+    def tree_eat_nutrients(cls, tree_list, nutri_map, list_lifespan_trees):
         for tree in tree_list:
-            tree.eat(nutri_map, tree_list)
+            tree.eat(nutri_map, tree_list, list_lifespan_trees)
         
     @classmethod
-    def kill_trees_no_sun(cls, tree_list):
+    def kill_trees_no_sun(cls, tree_list, list_lifespan_trees):
         for tree in tree_list:
-            tree.die_if_under_canopy(tree_list)
+            tree.die_if_under_canopy(tree_list, list_lifespan_trees)

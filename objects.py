@@ -10,7 +10,6 @@ class Tree:
         self.age = 0
         self.growth = 0.01 #percentage of growth, at birth we assume it has 1% of its adult size
         self.reserves = 0 #loose pts if no food, die if <0
-        self.size = 0.1 #no idea what unit that would be
         self.max_size = 15 #15m
 
         if x_pos == None:
@@ -45,7 +44,7 @@ class Tree:
         new_y = self.y_pos + (random.randint(0,1)*2-1)*random.expovariate(coef)
         trees_list.append(Tree(new_x, new_y))
 
-    def eat(self, map, tree_list):
+    def eat(self, map, tree_list, list_lifespan_trees):
         """
         Function for trees "eating" ground nutrients.
         First the tree eats to assure its own survival, if successful in doing
@@ -53,6 +52,8 @@ class Tree:
         If the tree cannot eat enough to grow, its growth is stunted, and if 
         the tree cannot eat enough to survive, it dies. 
         """
+        self.age += 1 #get older by one year
+
         coef_ntt = 1/750 #nutrient to tree coefficient (1 nutri square can feed 750pt of hunger, when 1 adult tree eats 150pt) 
         coef_min_nutri = 0.001
         coef_eff_nutri = 0.4 # 0-1, at what nutrient concentration do trees start having trouble eating
@@ -83,7 +84,7 @@ class Tree:
 
         #check if tree dies of hunger
         if self.reserves < 0:
-            self.kill(tree_list)
+            self.kill(tree_list, list_lifespan_trees)
 
 
     def survival_hunger(self):
@@ -102,18 +103,19 @@ class Tree:
 
         return m.exp(self.growth * coef)
     
-    def kill(self, tree_list):
+    def kill(self, tree_list, list_lifespan_trees):
         """
         kill the current tree
         """
         try:
             tree_list.remove(self)
+            list_lifespan_trees += [self.age]
         except ValueError:
             print('kill_tree_error')
 
         del self
 
-    def die_if_under_canopy(self, tree_list):
+    def die_if_under_canopy(self, tree_list, list_lifespan_trees):
         """
         if a small tree is under a big tree, we assume the big tree takes all 
         the sunlight and kills the small tree 
@@ -125,7 +127,7 @@ class Tree:
             if tree.growth > self.growth: #bigger tree
                 dist = m.sqrt((tree.x_pos - self.x_pos)**2 + (tree.y_pos - self.y_pos)**2)
                 if dist < tree.growth * coef_display_growth + self.growth * coef_display_growth: #if touching (big tree removing sunlight)
-                    self.kill(tree_list) #kill small tree
+                    self.kill(tree_list, list_lifespan_trees) #kill small tree
 
 
 

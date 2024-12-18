@@ -28,14 +28,19 @@ pygame.display.update()
 
 
 timestep = pygame.USEREVENT + 1
-pygame.time.set_timer(timestep, 1000) 
+pygame.time.set_timer(timestep, 100) #x10 speed: 1s = 10y 
 
 nutri_map = [[libs.Nutrient(init_nutri_amount=0.5,x_pos=i*nutri_quare_size, y_pos=j*nutri_quare_size)
                for i in range(windows_width//nutri_quare_size)] 
                for j in range(windows_height//nutri_quare_size)]
 
 
-more_function.Terminal_Show.print_nutri_map(nutri_map)
+#more_function.Terminal_Show.print_nutri_map(nutri_map)
+
+sim_stop_time = 300 #300 years
+list_pop_overtime = []
+list_lifespan_trees = []
+
 
 iter = 0
 
@@ -51,7 +56,7 @@ while running:
             more_function.Pygame_Display.show_nutrients(nutri_map)
 
             #make trees eat nutrients
-            more_function.Simulation.tree_eat_nutrients(trees, nutri_map)
+            more_function.Simulation.tree_eat_nutrients(trees, nutri_map, list_lifespan_trees)
             more_function.Pygame_Display.show_nutrients(nutri_map)
 
             #tree reproduction
@@ -59,7 +64,7 @@ while running:
             more_function.Pygame_Display.show_trees(trees)
             
             #kill trees with no sunlight
-            more_function.Simulation.kill_trees_no_sun(trees)
+            more_function.Simulation.kill_trees_no_sun(trees, list_lifespan_trees)
             more_function.Pygame_Display.show_trees(trees)
 
             #terminal view
@@ -70,8 +75,22 @@ while running:
             
             #update window
             pygame.display.update()
+
+            #data collection
+            list_pop_overtime += [len(trees)]
+            
+
+            if iter > sim_stop_time:
+                running = False
       
         # Check for QUIT event       
         if event.type == pygame.QUIT: 
             running = False
 
+#print data
+print("Tree population :")
+print(list_pop_overtime)
+print("")
+print("Tree lifespan :")
+print(list_lifespan_trees)
+print("")
