@@ -14,7 +14,7 @@ running = True
 def square_forest(width, height, trees):
     x_mid = width//2
     y_mid = height//2
-    side = 3
+    side = 5
     space = x_mid//5
     for x in range(side):  
         for y in range(side):
@@ -37,7 +37,7 @@ nutri_map = [[libs.Nutrient(init_nutri_amount=0.5,x_pos=i*nutri_quare_size, y_po
 
 #more_function.Terminal_Show.print_nutri_map(nutri_map)
 
-sim_stop_time = 300 #300 years
+sim_stop_time = 200 #300 years
 list_pop_overtime = []
 list_lifespan_trees = []
 

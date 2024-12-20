@@ -1,7 +1,7 @@
 import pygame
 
 windows_width = 1100
-windows_height = 800
+windows_height = 700
 
 nutri_quare_size = 25
 

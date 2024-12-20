@@ -7,7 +7,7 @@ from pygame_info import windows_width, windows_height, window, nutri_quare_size
 
 class Tree:
     def __init__(self, x_pos = None, y_pos = None):
-        self.age = 0
+        self.age = 0 #only for gathering data, does not change simulation
         self.growth = 0.01 #percentage of growth, at birth we assume it has 1% of its adult size
         self.reserves = 0 #loose pts if no food, die if <0
         self.max_size = 15 #15m
@@ -18,19 +18,14 @@ class Tree:
             y_pos = random.randint(0, windows_height)
         self.x_pos = x_pos
         self.y_pos = y_pos
-
-        if 0 >= x_pos or x_pos >= windows_width or 0 >= y_pos or y_pos >= windows_height:
-            del self # remove trees ouside map
         
-        #coeficients for equations
-        #self.fully_grown_age = 40 # 40 years to reach max height
 
     def draw_self(self):
         #draw tree in window
         pygame.draw.circle(window, (0, 125, 0), [self.x_pos, self.y_pos], m.ceil(8*self.growth), 0)
 
     def reproduce(self, tree_list):
-        coef = 0.8 #bigger coef -> less children
+        coef = 1.0 #bigger coef -> less children
         
         for child in range(m.floor(random.expovariate(1/self.growth * coef))):
             self.add_new_tree(tree_list)
@@ -39,7 +34,8 @@ class Tree:
         coef = 0.1
         new_x = self.x_pos + (random.randint(0,1)*2-1)*random.expovariate(coef)
         new_y = self.y_pos + (random.randint(0,1)*2-1)*random.expovariate(coef)
-        trees_list.append(Tree(new_x, new_y))
+        if not (0 >= new_x or new_x >= windows_width or 0 >= new_y or new_y >= windows_height): #tree in map
+            trees_list.append(Tree(new_x, new_y))
 
     def eat(self, map, tree_list, list_lifespan_trees):
         """
@@ -50,13 +46,22 @@ class Tree:
         the tree cannot eat enough to survive, it dies. 
         """
         
-        coef_ntt = 1/750 #nutrient to tree coefficient (1 nutri square can feed 750pt of hunger, when 1 adult tree eats 150pt) 
+        #coef_ntt = 1/750 #nutrient to tree coefficient (1 nutri square can feed 750pt of hunger, when 1 adult tree eats 150pt) 
+        coef_ntt = 1/1500 #nutrient to tree coefficient (1 nutri square can feed 750pt of hunger, when 1 adult tree eats 150pt) 
         coef_min_nutri = 0.001
         coef_eff_nutri = 0.4 # 0-1, at what nutrient concentration do trees start having trouble eating
 
         #check available nutrients
-        available_nutrients = map[m.floor(self.y_pos//nutri_quare_size)][m.floor(self.x_pos//nutri_quare_size)].nutrient_amount #in %
-            
+        try:
+            available_nutrients = map[m.floor(self.y_pos//nutri_quare_size)][m.floor(self.x_pos//nutri_quare_size)].nutrient_amount #in %
+        except:
+            print(self.y_pos)
+            print(self.x_pos)
+            print(len(map))
+            print(len(map[0]))
+            print(windows_height)
+            print(self.y_pos >= windows_height)
+
         #reserve and survival hunger
         survival_hunger = self.survival_hunger() #food tree must eat to stay alive
         res_hunger = (self.max_reserves() - self.reserves) #how much tree wants to eat to fill its reserves
