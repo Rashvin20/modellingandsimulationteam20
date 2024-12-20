@@ -15,10 +15,17 @@ How to analyse the ODE and view the results:
 Folder Structure
 modellingandsimulationteam20
 ├── finalcw.m           # MATLAB script to analyse the simulation results with real data.
+
 ├── main.py             # Main Python script (to run) to view the simulation.
+
 ├── more_function.py    # to display the game
+
 ├── objects.py          #contains the tree functions
+
 ├── pygame_info.py      # contain the games code
+
 ├── team20_data.xlsx    # Contains the real dataset
+
 ├── README.md           # Project documentation
+
 └── __pycache__/        # Compiled Python bytecode
