@@ -12,8 +12,8 @@ How to analyse the ODE and view the results:
 
 
 
-Folder Structure
-modellingandsimulationteam20
+Folder Structure:
+
 ├── finalcw.m           # MATLAB script to analyse the simulation results with real data.
 
 ├── main.py             # Main Python script (to run) to view the simulation.
