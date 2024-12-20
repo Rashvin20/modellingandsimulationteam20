@@ -1,6 +1,5 @@
 %% TEAM 20 MODELLING AND SIMULATION COURSEWORK
-% This coursework is about modelling the growth of the forest in the Mekong 
-% Region. We compare this model with the simulaion created to compare and analyse 
+% This coursework is about modelling the growth of the forest in the Green Belt Region. We compare this model with the simulaion created to compare and analyse 
 % the differences.
 
 
